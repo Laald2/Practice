@@ -31,7 +31,7 @@ def mid(string):
     else:
         return string[int(midIndex)]
 
- '''
+'''
  Online status
 The aim of this challenge is, given a dictionary of people's online status, to count the number of people who are online.
 
@@ -56,7 +56,3 @@ def online_count(dict):
         if dict[key] is 'online':
             onlineNum += 1
     return onlineNum
-def newFuncForPylintTest():
-    ranVar = 0
-    anotherRanVar = 1
-    
