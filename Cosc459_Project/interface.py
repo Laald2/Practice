@@ -2,13 +2,15 @@
 This script is the interface between the database 
 and the website
 '''
-# pylint disable
+# pylint disable=too-many-locals
+# pylint disable=import-error
+# pylint disable=unused-import
+import datetime
 from flask import Flask, make_response, redirect, render_template, request
 import mysql.connector
-#  plint enable
 
 #needed for handling connection issues
-#pylint disable=broad-exception--caught
+#pylint disable=broad-exception-caught
 app = Flask(__name__)
 mydb = mysql.connector.connect(
         host="localhost",
@@ -44,8 +46,9 @@ def search_employee():
     columns = [column[0] for column
                in mycursor.fetchall() if column[0] not in
                ['mgrSSN', 'EmployeeSSN', 'SSN']]
-
+    # pylint disable
     mycursor.execute(f"SELECT {','.join([col for col in columns if col not in ['mgrSSN', 'EmployeeSSN', 'SSN']])} FROM {table} WHERE {column} = %s", (value,))
+    # pylint enable
 
     rows = mycursor.fetchall()
     return render_template('search.html', columns=columns, rows=rows)
@@ -102,7 +105,8 @@ def login():
         mycursor.execute("SELECT * FROM dependent")
         dependent_row = mycursor.fetchall()
 
-        return render_template('mainPage.html', rows=rows, e_row=e_row, department_row=department_row,
+        return render_template('mainPage.html', rows=rows, e_row=e_row,
+                                department_row=department_row,
         dl_row=dl_row, w_row=w_row, dependent_row=dependent_row)
     if username == 'employee' and password == 'employee':
         mycursor.execute("SELECT * FROM Tickets")
@@ -202,7 +206,8 @@ def add_ticket():
         mycursor.execute("SELECT * FROM dependent")
         dependent_row = mycursor.fetchall()
 
-        return render_template('mainPage.html', rows=rows, e_row=e_row, department_row=department_row,
+        return render_template('mainPage.html', rows=rows, e_row=e_row,
+                               department_row=department_row,
         dl_row=dl_row, w_row=w_row, dependent_row=dependent_row)
     except Exception as e:
         return render_template('error.html', message=str(e))
@@ -276,20 +281,24 @@ def update_status():
         mycursor.execute("SELECT * FROM dependent")
         dependent_row = mycursor.fetchall()
 
-        return render_template('mainPage.html', rows=rows, e_row=e_row, department_row=department_row,
+        return render_template('mainPage.html', rows=rows, e_row=e_row,
+                               department_row=department_row,
         dl_row=dl_row, w_row=w_row, dependent_row=dependent_row)
     except Exception as e:
         return render_template('error.html', message=str(e))
 
 @app.route('/update_assigned_employee', methods=['POST'])
 def update_assigned_employee():
+    '''
+    Updates assigned employee in database
+    '''
     employee_id = ''
    # Get the form data
     ticket_id = request.form["ticketID"]
-    newAssignedEmployee = request.form["assignedEmployeeChange"]
+    new_assigned_employee = request.form["assignedEmployeeChange"]
 
     # Search for employeeSSN using employeeID
-    mycursor.execute("SELECT ID FROM Employee WHERE SSN = %s", (newAssignedEmployee,))
+    mycursor.execute("SELECT ID FROM Employee WHERE SSN = %s", (new_assigned_employee,))
     result = mycursor.fetchone()
     if result:
         employee_id = result[0]
@@ -309,7 +318,7 @@ def update_assigned_employee():
         sql = """UPDATE Works_On
         SET EmployeeSSN = %s
         WHERE ticketNumber = %s"""
-        mycursor.execute(sql, (newAssignedEmployee, ticket_id))
+        mycursor.execute(sql, (new_assigned_employee, ticket_id))
         mydb.commit()
 
         mycursor.execute("SELECT * FROM Tickets")
@@ -327,8 +336,8 @@ def update_assigned_employee():
         mycursor.execute("""DELETE FROM WORKS_ON
             WHERE ticketNumber IN (
             SELECT ticketNumber FROM Tickets
-            WHERE ticketStatus = 'closed' OR ticketStatus = 'Closed')
-        """
+            WHERE ticketStatus = 'closed' OR ticketStatus = 'Closed'
+        """)
         mydb.commit()
         mycursor.execute("SELECT * FROM works_on")
         w_row = mycursor.fetchall()
@@ -336,7 +345,8 @@ def update_assigned_employee():
         mycursor.execute("SELECT * FROM dependent")
         dependent_row = mycursor.fetchall()
 
-        return render_template('mainPage.html', rows=rows, e_row=e_row, department_row=department_row,
+        return render_template('mainPage.html', rows=rows, e_row=e_row,
+                                department_row=department_row,
         dl_row=dl_row, w_row=w_row, dependent_row=dependent_row)
     except Exception as e:
         return render_template('error.html', message=str(e))
