@@ -1,18 +1,13 @@
+# pylint: disable-all
 '''
 This script is the interface between the database 
 and the website
 '''
-# pylint disable=too-many-locals
-# pylint disable=import-error
-# pylint disable=unused-import
+
 import datetime
 from flask import Flask, make_response, redirect, render_template, request
 import mysql.connector
-# pylint enable=import-error
-# pylint enable=unused-import
 
-#needed for handling connection issues
-#pylint disable=broad-exception-caught
 app = Flask(__name__)
 mydb = mysql.connector.connect(
         host="localhost",
@@ -357,4 +352,3 @@ def update_assigned_employee():
 
 if __name__ == '__main__':
     app.run()
-    # pylint enable=too-many-locals
