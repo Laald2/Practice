@@ -18,7 +18,9 @@ def capital_indexes(string):
             indexes.append(index)
         index += 1
     if indexes:
+        print(indexes)
         return indexes
+    print("no indexes")
     return 'empty indexes'
 
 def mid(string):
@@ -34,6 +36,7 @@ def mid(string):
     if mid_index.is_integer():
         print("ERROR no middile letter")
     if not mid_index.is_integer():
+        print(string[int(mid_index)])
         return string[int(mid_index)]
     return "no middile letter"
 
@@ -64,7 +67,11 @@ def online_count(online_status):
     for key in online_status:
         if online_status[key] == 'online':
             online_num += 1
+    print(online_num)
     return online_num
 
 if __name__ == '__main__':
+    #test for challenges
+    online_count({})
     mid("123")
+    capital_indexes("AsBVx")
