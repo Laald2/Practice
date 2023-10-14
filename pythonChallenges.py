@@ -56,3 +56,7 @@ def online_count(dict):
         if dict[key] is 'online':
             onlineNum += 1
     return onlineNum
+def newFuncForPylintTest():
+    ranVar = 0
+    anotherRanVar = 1
+    
