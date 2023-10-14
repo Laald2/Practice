@@ -8,6 +8,8 @@ and the website
 import datetime
 from flask import Flask, make_response, redirect, render_template, request
 import mysql.connector
+# pylint enable=import-error
+# pylint enable=unused-import
 
 #needed for handling connection issues
 #pylint disable=broad-exception-caught
@@ -36,7 +38,9 @@ def logout():
     return render_template('index.html')
 @app.route('/search_employee', methods=['GET', 'POST'])
 def search_employee():
-
+    '''
+    allows the user to search for an employee
+    '''
     value = request.form.get("search-input")
     column = request.form.get("search-option-column")
     table = request.form.get("search-option-table")
@@ -46,9 +50,9 @@ def search_employee():
     columns = [column[0] for column
                in mycursor.fetchall() if column[0] not in
                ['mgrSSN', 'EmployeeSSN', 'SSN']]
-    # pylint disable
+    # pylint disable=line-too-long
     mycursor.execute(f"SELECT {','.join([col for col in columns if col not in ['mgrSSN', 'EmployeeSSN', 'SSN']])} FROM {table} WHERE {column} = %s", (value,))
-    # pylint enable
+    # pylint enable=line-too-long
 
     rows = mycursor.fetchall()
     return render_template('search.html', columns=columns, rows=rows)
@@ -353,3 +357,4 @@ def update_assigned_employee():
 
 if __name__ == '__main__':
     app.run()
+    # pylint enable=too-many-locals
