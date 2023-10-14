@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--Employee Page-->
+
+<head>
+    <h1>Employee Page</h1>
+    <form methods='GET' action="{{ url_for('logout') }}">
+        <button type="submit">Logout</button>
+    </form>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Database</title>
+
+    <form method="POST" action="{{ url_for('search_employee') }}">
+        <label for="search-option">Choose a table:</label>
+        <select name="search-option-table" id="search-table">
+        <option value="Employee">Employee</option>
+        <option value="Tickets">Tickets</option>
+        <option value="department">department</option>
+        <option value="department_locations">department_locations</option>
+        <option value="works_on">works_on</option>
+        <option value="dependent">dependent</option>
+    </select>
+        <label for="column-name">Choose a column:</label>
+        <select name="search-option-column" id="column-name">
+        </select>
+        <div class="topnav">
+            <input type="text" name="search-input" placeholder="Search..">
+        </div>
+        <button type="submit">Search</button>
+    </form>
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <h1>Team Tickets</h1>
+    <table id="ticketTable">
+        <thead>
+            <tr>
+                <th>Ticket Name</th>
+                <th>Ticket ID</th>
+                <th>Assigned Employee ID</th>
+                <th>Ticket Status</th>
+                <th>Ticket Location</th>
+                <th>Priority Number</th>
+                <th>Department Number</th>
+                <th>Created Date</th>
+            </tr>
+        </thead>
+        {% for row in rows %}
+        <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+            <td>{{ row[3] }}</td>
+            <td>{{ row[4] }}</td>
+            <td>{{ row[5] }}</td>
+            <td>{{ row[6] }}</td>
+            <td>{{ row[7] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <h1>Team IDs</h1>
+    <table id="EmployeeTable">
+
+        <thead>
+            <th>Employee Name</th>
+            <th>Employee ID</th>
+            <th>SSN</th>
+            <th>SEX</th>
+            <th>Start Date</th>
+            <th>Address</th>
+            <th>Department Number</th>
+            <th>Salary</th>
+            <th>birthday</th>
+        </thead>
+        {% for row in Erow %}
+        <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
+            <td><input type="hidden" id="custId" name="custId" value=row[2]></td>
+            <td>{{ row[3] }}</td>
+            <td>{{ row[4] }}</td>
+            <td>{{ row[5] }}</td>
+            <td>{{ row[6] }}</td>
+            <td>{{ row[7] }}</td>
+            <td>{{ row[8] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <h1>Works On</h1>
+    <table id="WorksOnTable">
+
+        <thead>
+            <th>Employee SSN</th>
+            <th>Ticket Number</th>
+            <th>Hours</th>
+        </thead>
+        </tbody>
+        {% for row in wRow %}
+        <tr>
+            <td><input type="hidden" id="custId" name="custId" value=row[0]></td>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+<script src="{{ url_for('static', filename='main.js') }}"></script>
+
+</html>

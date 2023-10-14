@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--MANAGER PAGE-->
+
+<head>
+    <h1>MANAGER PAGE</h1>
+    <form methods='GET' action="{{ url_for('logout') }}">
+        <button type="submit">Logout</button>
+    </form>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Database</title>
+
+    <h2>Search</h2>
+
+    <form method="POST" action="{{ url_for('search') }}">
+        <label for="search-option">Choose a table:</label>
+        <select name="search-option-table" id="search-table">
+        <option value="Employee">Employee</option>
+        <option value="Tickets">Tickets</option>
+        <option value="department">department</option>
+        <option value="department_locations">department_locations</option>
+        <option value="works_on">works_on</option>
+        <option value="dependent">dependent</option>
+    </select>
+        <label for="column-name">Choose a column:</label>
+        <select name="search-option-column" id="column-name">
+        </select>
+        <div class="topnav">
+            <input type="text" name="search-input" placeholder="Search..">
+        </div>
+        <button type="submit">Search</button>
+    </form>
+
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <h1>Team Tickets</h1>
+    <table id="ticketTable">
+        <thead>
+            <tr>
+                <th>Ticket Name</th>
+                <th>Ticket ID</th>
+                <th>Assigned Employee ID</th>
+                <th>Ticket Status</th>
+                <th>Ticket Location</th>
+                <th>Priority Number</th>
+                <th>Department Number</th>
+                <th>Created Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+            <tr>
+                <td>{{ row[0] }}</td>
+                <td>{{ row[1] }}</td>
+                <td>{{ row[2] }}</td>
+                <td>{{ row[3] }}</td>
+                <td>{{ row[4] }}</td>
+                <td>{{ row[5] }}</td>
+                <td>{{ row[6] }}</td>
+                <td>{{ row[7] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h1>Team IDs</h1>
+    <table id="EmployeeTable">
+
+        <thead>
+            <th>Employee Name</th>
+            <th>Employee ID</th>
+            <th>SSN</th>
+            <th>SEX</th>
+            <th>Start Date</th>
+            <th>Address</th>
+            <th>Department Number</th>
+            <th>Salary</th>
+            <th>birthday</th>
+        </thead>
+        </tbody>
+        {% for row in Erow %}
+        <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+            <td>{{ row[3] }}</td>
+            <td>{{ row[4] }}</td>
+            <td>{{ row[5] }}</td>
+            <td>{{ row[6] }}</td>
+            <td>{{ row[7] }}</td>
+            <td>{{ row[8] }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <h1>Works On</h1>
+    <table id="WorksOnTable">
+
+        <thead>
+            <th>Employee SSN</th>
+            <th>Ticket Number</th>
+            <th>Hours</th>
+        </thead>
+        </tbody>
+        {% for row in wRow %}
+        <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="row">
+        <div class="column">
+            <h2>Add New Ticket</h2>
+            <form method="POST" action="{{ url_for('add_ticket') }}">
+
+                <label for="ticketName">Ticket Name:</label>
+                <input type="text" id="ticketName" name="ticketName" required><br>
+
+                <label for="ticketID">Ticket ID</label>
+                <input type="text" id="ticketID" name="ticketID"><br>
+
+                <label for="assignedEmployee">Assigned Employee:</label>
+                <input type="text" id="assignedEmployee" name="assignedEmployee" required><br>
+
+                <label for="ticketStatus">Ticket Status:</label>
+                <input type="text" id="ticketStatus" name="ticketStatus" required><br>
+
+                <label for="">Ticket Location:</label>
+                <input type="text" id="ticketLocation" name="ticketLocation" required><br>
+
+                <label for="">Priority Number:</label>
+                <input type="text" id="priorityNumber" name="priorityNumber" required><br>
+
+                <label for="">Department Number:</label>
+                <input type="text" id="departmentNumber" name="departmentNumber" required><br>
+
+                <label for="">Hours Allocated:</label>
+                <input type="text" id="hours" name="hours" required><br>
+
+                <input type="submit" value="Add Ticket">
+            </form>
+        </div>
+
+        <div class="column">
+            <!--Update ticket status-->
+            <h2>Update Ticket Status</h2>
+            <form method="POST" action="{{ url_for('update_status') }}">
+                <label for="ticketID">Ticket ID:</label>
+                <input type="text" id="ticketIDLookup" name="ticketID" required><br>
+
+                <label for="ticketStatus">New Ticket Status:</label>
+                <input type="text" id="ticketStatusChange" name="ticketStatus" required><br>
+
+                <label for="ticketHours">Hours Allocated (only if change to open):</label>
+                <input type="text" id="hourChange" name="hours"><br>
+
+                <label for="ticketHours">Assigned Employee (only if change to open):</label>
+                <input type="text" id="assignedEmployeeAdd" name="assigned_employee"><br>
+
+                <input type="submit" value="Update Status">
+            </form>
+        </div>
+
+        <div class="column">
+            <!--Changed assigned employee-->
+            <h2>Update Assigned Employee</h2>
+            <form method="POST" action="{{ url_for('update_assigned_employee') }}">
+                <label for="ticketID">Ticket ID:</label>
+                <input type="text" id="ticketIDLookupEmp" name="ticketID" required><br>
+
+                <label for="assignedEmployee">New Assigned Employee:</label>
+                <input type="text" id="assignedEmployeeChange" name="assignedEmployeeChange" required><br>
+
+                <input type="submit" value="Update Employee">
+            </form>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+
+</html>
