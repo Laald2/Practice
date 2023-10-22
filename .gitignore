@@ -1,0 +1,6 @@
+#executables for C++
+*.exe
+
+.vscode/
+
+build/
