@@ -1,4 +1,4 @@
-#pylint=disable
+# pylint: disable-all
 import smtplib
 import requests,time
 
