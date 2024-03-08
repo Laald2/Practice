@@ -5,8 +5,8 @@ project(YourProjectName)
 enable_testing()
 
 # Set the source and include directories
-set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Practice/TestCMake/src)
-set(INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Practice/TestCMake/include)
+set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/TestCMake/src)
+set(INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/TestCMake/include)
 
 # Add the source and include directories
 include_directories(${INCLUDE_DIR})
