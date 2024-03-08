@@ -1,3 +1,0 @@
-add_executable(YourTestSuiteName Practice.cpp)
-
-target_link_libraries(YourTestSuiteName YourLibraryName)
