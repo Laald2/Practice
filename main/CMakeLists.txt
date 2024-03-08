@@ -1,3 +1,0 @@
-add_executable(YourExecutableName main.cpp)
-
-target_link_libraries(YourExecutableName mainLibrary)
