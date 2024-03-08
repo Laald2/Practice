@@ -8,7 +8,10 @@ only includes the default
 import argparse
 import os
 
-def ParseArguments():
+def parse_argmuents():
+    '''
+    parses the arguments from the terminal
+    '''
     parser = argparse.ArgumentParser(description='Process File name')
     parser.add_argument('-f','--file',
                         help='enter a file base name to be created')
@@ -21,7 +24,7 @@ def ParseArguments():
     args = parser.parse_args()
     return args
 
-def WriteDefaultHeader(file, file_name, tab):
+def write_default_header(file, file_name, tab):
     '''
     Write the default of the header file
     '''
@@ -40,7 +43,7 @@ def WriteDefaultHeader(file, file_name, tab):
         file_name.write("\t" + file + "& operator=(const " + file + "& other) = delete;\n")
         file_name.write("};")
 
-def CreateHeaderFile(file, args):
+def create_header_file(file, args):
     '''
     creating header file
     '''
@@ -48,26 +51,26 @@ def CreateHeaderFile(file, args):
     file_path = file
     if args.location:
         if args.seperate:
-            if (not os.path.exists(args.location)):
+            if not os.path.exists(args.location):
                 os.makedirs(args.location)
-            if (not os.path.exists(os.path.join(args.location, 'include'))):
+            if not os.path.exists(os.path.join(args.location, 'include')):
                 os.makedirs(os.path.join(args.location, 'include'))
             file_path = os.path.join(args.location, 'include', file)
         else:
             file_path = os.path.join(args.location, file)
 
-    with open(os.path.join(file_path + '.h'), 'w') as file_name:
+    with open(os.path.join(file_path + '.h'), 'w', encoding="utf-8") as file_name:
         # Write content to the file
-        if args.namespace != None:
+        if args.namespace is not None:
             file_name.write("namespace "+ args.namespace + "\n{\n")
-            WriteDefaultHeader(file, file_name, True)
+            write_default_header(file, file_name, True)
             file_name.write("\n}")
         else:
-            WriteDefaultHeader(file, file_name, False)
+            write_default_header(file, file_name, False)
     return 0
 
 
-def WriteCPPConstructor(file, file_name, tab):
+def write_cpp_constructor(file, file_name, tab):
     '''
     write the constructor of a cpp file
     '''
@@ -78,7 +81,7 @@ def WriteCPPConstructor(file, file_name, tab):
         file_name.write(file + "::" + file +"()\n")
         file_name.write("{}")
 
-def CreateCPPFile(file, args):
+def create_cpp_file(file, args):
     '''
     creating cpp file
     '''
@@ -86,30 +89,30 @@ def CreateCPPFile(file, args):
     file_path = file
     if args.location:
         if args.seperate:
-            if (not os.path.exists(args.location)):
+            if not os.path.exists(args.location):
                 os.makedirs(args.location)
-            if (not os.path.exists(os.path.join(args.location, 'src'))):
+            if not os.path.exists(os.path.join(args.location, 'src')):
                 os.makedirs(os.path.join(args.location, 'src'))
             file_path = os.path.join(args.location, 'src', file)
         else:
             file_path = os.path.join(args.location, file)
-    with open(os.path.join(file_path + '.cpp'), 'w') as file_name:
+    with open(os.path.join(file_path + '.cpp'), 'w', encoding="utf-8") as file_name:
         # Write content to the file
         file_name.write('#include "' + file + '.h"\n')
-        if args.namespace != None:
+        if args.namespace is not None:
             file_name.write("namespace "+ args.namespace + "\n{\n")
-            WriteCPPConstructor(file, file_name, True)
+            write_cpp_constructor(file, file_name, True)
             file_name.write("\n}")
         else:
-            WriteCPPConstructor(file, file_name, False)
+            write_cpp_constructor(file, file_name, False)
     return 0
 
 
-def Main(args):
+def main(args):
     file_name = args.file
     return_code = 0
-    return_code += CreateCPPFile(file_name, args)
-    return_code += CreateHeaderFile(file_name, args)
+    return_code += create_cpp_file(file_name, args)
+    return_code += create_header_file(file_name, args)
     if return_code == 0:
         print("############ NOTE ##################")
         print("Successfully created " +  file_name + " add CMakeLists.txt or anything else")
@@ -117,5 +120,5 @@ def Main(args):
         print("####################################")
 
 if __name__ == '__main__':
-    ARGUMENTS = ParseArguments()
-    Main(ARGUMENTS)
+    ARGUMENTS = parse_argmuents()
+    main(ARGUMENTS)
